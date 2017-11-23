@@ -8,6 +8,9 @@ app = Flask(__name__)
 
 @app.route('/search')
 def search():
+    # limit = int(request.args.get('page[limit]'))
+    # offset = int(request.args.get('page[offset]'))
+
     limit = 100
     offset = 0
 
@@ -15,10 +18,10 @@ def search():
     search_result = parse_result(normalize_song_name(song_name))
 
     result = {}
-    result['data'] = search_result[offset:limit]
+    result['data'] = search_result[offset:][:limit]
     result['meta'] = {
-        'limit': 100,
-        'offset': 100,
+        'limit': limit,
+        'offset': offset,
         'total': len(search_result)
     }
     return jsonify(result)
