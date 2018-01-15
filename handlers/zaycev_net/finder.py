@@ -3,7 +3,7 @@ from urllib.parse import urljoin
 
 import requests
 
-from handlers.audio_parsers import prepare_result
+from handlers.zaycev_net.audio_parsers import prepare_result
 
 SEARCH_URL = 'http://zaycev.net/search.html?query_search={song_name}'
 DOWNLOAD_URL = 'http://zaycev.net'
@@ -13,11 +13,12 @@ def normalize_song_name(song_name):
     return str.replace(song_name, ' ', '+')
 
 
-def parse_result(normalized_song_name):
+def parse_result(normalized_song_name, limit, offset):
     search_page_url = SEARCH_URL.format(song_name=normalized_song_name)
     search_page = requests.get(search_page_url)
 
-    return prepare_result(search_page.content.decode())
+    result = prepare_result(search_page.content.decode())
+    return result[offset:][:limit]
 
 
 def normalize_download_url(data_url):

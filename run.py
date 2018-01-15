@@ -1,7 +1,8 @@
 from flask import Flask, request
 from flask import jsonify
 
-from handlers.finder import parse_result, normalize_song_name, normalize_download_url
+# from handlers.zaycev_net.finder import parse_result, normalize_song_name, normalize_download_url
+from handlers.mail_ru.finder import parse_result, normalize_song_name, normalize_download_url
 
 app = Flask(__name__)
 
@@ -12,10 +13,10 @@ def search():
     offset = int(request.args.get('page[offset]', 0))
 
     song_name = request.args.get('query')
-    search_result = parse_result(normalize_song_name(song_name))
+    search_result = parse_result(normalize_song_name(song_name), limit, offset)
 
     result = {}
-    result['data'] = search_result[offset:][:limit]
+    result['data'] = search_result
     result['meta'] = {
         'limit': limit,
         'offset': offset,
@@ -36,3 +37,5 @@ def download():
 
 if __name__ == '__main__':
     app.run()
+# "/musicset/play/936394cc1b6ac6e01ea123f96033bd8a/3946953.json",
+# "http://zaycev.net/pages/39469/3946953.shtml?autoplay=1"
