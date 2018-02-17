@@ -33,5 +33,5 @@ def normalize_download_url(data_url):
 
 
 if __name__ == '__main__':
-    data_urls = parse_result(normalize_song_name('The Hardkiss'))
-    print(data_urls)
+    data_urls = parse_result(normalize_song_name('The Hardkiss'), 100, 0)
+    print(normalize_download_url(data_urls[0][1]))
