@@ -30,7 +30,16 @@ def parse_result(normalized_song_name, limit, offset):
 def normalize_download_url(data_url):
     url = get_download_url(requests.get(data_url).content)
     if url:
-        return urljoin(DOWNLOAD_URL, url)
+        json_url = urljoin(DOWNLOAD_URL, url)
+    else:
+        return None
+    result = requests.get(json_url).json()
+    url = dict(result).get('url')
+    if url:
+        url = str.split(url, '?')
+    if url:
+        return url[0]
+    return None
 
 
 def offset2page(offset):
