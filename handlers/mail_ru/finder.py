@@ -24,7 +24,7 @@ def parse_result(normalized_song_name, limit, offset):
 
     offset = offset - (page -1) * 20
     print(offset)
-    return result[offset:][:limit]
+    return result[offset:][:limit], 200
 
 
 def normalize_download_url(data_url):

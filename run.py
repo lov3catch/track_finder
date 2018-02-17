@@ -18,7 +18,7 @@ class DRIVERS:
         return normalizers.get(alias)
 
 
-DEFAULT_DRIVER = DRIVERS.ZAYCEV_NET
+DEFAULT_DRIVER = DRIVERS.MAIL_RU
 
 if DEFAULT_DRIVER == DRIVERS.ZAYCEV_NET:
     from handlers.zaycev_net.finder import parse_result, normalize_song_name
@@ -34,14 +34,14 @@ def search():
     offset = int(request.args.get('page[offset]', 0))
 
     song_name = request.args.get('query')
-    search_result = parse_result(normalize_song_name(song_name), limit, offset)
+    search_result, total = parse_result(normalize_song_name(song_name), limit, offset)
 
     result = {}
     result['data'] = search_result
     result['meta'] = {
         'limit': limit,
         'offset': offset,
-        'total': len(search_result)
+        'total': total
     }
     return jsonify(result)
 

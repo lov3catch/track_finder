@@ -18,7 +18,7 @@ def parse_result(normalized_song_name, limit, offset):
     search_page = requests.get(search_page_url)
 
     result = prepare_result(search_page.content.decode())
-    return result[offset:][:limit]
+    return result[offset:][:limit], len(result)
 
 
 def normalize_download_url(data_url):
