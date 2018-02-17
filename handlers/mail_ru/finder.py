@@ -28,7 +28,10 @@ def parse_result(normalized_song_name, limit, offset):
 
 
 def normalize_download_url(data_url):
-    return get_download_url(requests.get(data_url).content)
+    url = get_download_url(requests.get(data_url).content)
+    if url:
+        return urljoin(DOWNLOAD_URL, url)
+
 
 def offset2page(offset):
     track_per_page = 20
