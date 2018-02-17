@@ -40,10 +40,13 @@ def prepare_result(html):
 
 def get_download_url(html):
     parser = BeautifulSoup(html, "html.parser")
-    download_div = parser.find('div', {'class': 'audiotrack - button audiotrack - button_download'})
-    print(download_div)
-    if (download_div):
-        return download_div.find('a', {'class': 'audiotrack-button__label track-geo__button track-geo__link hover-bound'})['href']
+    download_div = parser.find('div', {'class': 'musicset-track-list__items'})
+    download_div.findAll('div', {'class': 'musicset-track clearfix'})
+
+    find_result_items = parser.find('div', {'class': 'audiotrack-button audiotrack-button_download'})
+    if (find_result_items):
+        return find_result_items[0].get('data-url')
+        # return download_div.find('a', {'class': 'audiotrack-button__label track-geo__button track-geo__link hover-bound'})['href']
 
 
 
