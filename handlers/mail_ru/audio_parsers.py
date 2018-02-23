@@ -32,7 +32,7 @@ def prepare_result(html):
             title = result_item.find('div', {'class': 'zaycev__block'}).find('h3', {'class': 'result__title'}).find('a',
                                                                                                                     {
                                                                                                                         'class': 'light-link'}).text
-            result.append((title, url, 'mail_ru'))
+            result.append((title, url.split('?')[0], 'mail_ru'))
     except Exception as ex:
         print(ex)
 
