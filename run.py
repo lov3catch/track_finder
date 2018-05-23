@@ -13,7 +13,7 @@ class DRIVERS:
     def get_url_normalizer(cls, alias):
         normalizers = {
             cls.ZAYCEV_NET: zn_normalize_download_url,
-            cls.MAIL_RU: mr_normalize_download_url
+            cls.MAIL_RU:    mr_normalize_download_url
         }
         return normalizers.get(alias)
 
@@ -28,22 +28,36 @@ else:
 app = Flask(__name__)
 
 
-@app.route('/search')
-def search():
-    limit = int(request.args.get('page[limit]', 100))
-    offset = int(request.args.get('page[offset]', 0))
-
-    song_name = request.args.get('query')
-    search_result, total = parse_result(normalize_song_name(song_name), limit, offset)
+def do_search(query, limit, offset):
+    search_result, total = parse_result(normalize_song_name(query), limit, offset)
 
     result = {}
     result['data'] = search_result
     result['meta'] = {
-        'limit': limit,
+        'limit':  limit,
         'offset': offset,
-        'total': total
+        'total':  total
     }
-    return jsonify(result)
+
+    return result
+
+
+def do_download(url, provider):
+    normalizer = DRIVERS.get_url_normalizer(provider)
+
+    result = {}
+    result['data'] = {'download_url': normalizer(url)}
+
+    return result
+
+
+@app.route('/search')
+def search():
+    limit = int(request.args.get('page[limit]', 100))
+    offset = int(request.args.get('page[offset]', 0))
+    query = request.args.get('query')
+
+    return jsonify(do_search(query, limit, offset))
 
 
 @app.route('/download')
@@ -51,12 +65,7 @@ def download():
     download_url = request.args.get('url')
     provider_alias = request.args.get('provider')
 
-    normalizer = DRIVERS.get_url_normalizer(provider_alias)
-
-    result = {}
-    result['data'] = {'download_url': normalizer(download_url)}
-
-    return jsonify(result)
+    return jsonify(do_download(download_url, provider_alias))
 
 
 if __name__ == '__main__':
