@@ -25,7 +25,7 @@ def find_result_div(html):
 
 
 def find_result_items(bs_tag):
-    return bs_tag.findAll('div', {'class': 'musicset-track clearfix'})
+    return bs_tag.findAll('div', {'class': 'musicset-track clearfix '})
 
 
 def find_artist_name(bs_tag):
