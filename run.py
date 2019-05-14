@@ -18,7 +18,7 @@ class DRIVERS:
         return normalizers.get(alias)
 
 
-DEFAULT_DRIVER = DRIVERS.ZAYCEV_NET
+DEFAULT_DRIVER = DRIVERS.MAIL_RU
 
 if DEFAULT_DRIVER == DRIVERS.ZAYCEV_NET:
     from handlers.zaycev_net.finder import parse_result, normalize_song_name
